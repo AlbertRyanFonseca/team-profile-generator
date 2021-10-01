@@ -60,36 +60,69 @@ function empInfo() {
             type: 'input',
             name: 'school',
             message: 'What school have you attended?',
-            when: answers => answers.roleChoice === 'Intern'
+            when: answers => answers.chooseRole === 'Intern',
+            validate: intSchool => {
+                if (intSchool) {
+                    return true;
+                }
+                else {
+                    console.log('Please enter your school');
+                    return false;
+                }
+            }
         },
         {
             type: 'input',
             name: 'github',
             message: 'enter your github username?',
-            when: answers => answers.rolechoice === 'Engineer'
+            when: answers => answers.chooseRole === 'Engineer',
+            validate: engGitHub => {
+                if (engGitHub) {
+                    return true;
+                } else {
+                    console.log('Please enter your GitHub username!');
+                    return false;
+                }
+            }
         },
         {
             type: 'input',
             name: 'phone',
             message: 'what is your office number?',
-            when: answers => answers.roleChoice === 'Manager'
+            when: answers => answers.chooseRole === 'Manager',
+            validate: manPhone => {
+                if (manPhone) {
+                    return true;
+                } else {
+                    console.log('Please enter an office number!');
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'confirm',
+            name: 'confirmation',
+            message: 'Do you have another employee to add?',
+            default: true
         }
     ])
-}
+        .then(answers => {
+            if (answers.chooseRole === 'Intern') {
+                const intern = new Intern(answers.name, answers.id, answers.email, answers.school);
+                employeeArr.push(intern);
+            } else if (answers.chooseRole === 'Engineer') {
+                const engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
+                employeeArr.push(engineer);
+            } else if (answers.chooseRole === 'Manager') {
+                const manager = new Manager(answers.name, answers.id, answers.email, answers.phone);
+                employeeArr.push(manager);
+            }
 
-function initAnswers() {
-    inquirer.prompt(question).then((answers) => {
-        if (answers.chooseRole === 'Intern') {
-            const intern = new Intern(answers.name, answers.id, answers.email, answers.school);
-            employeeArr.push(intern);
-        } else if (answers.chooseRole === 'Engineer') {
-            const engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
-            employeeArr.push(engineer);
-        } else if (answers.chooseRole === 'Manager') {
-            const manager = new Manager(answers.name, answers.id, answers.email, answers.phone);
-            employeeArr.push(manager);
-        }
-    })
+            if (answers.confirmation) {
+                return empInfo(answers);
+            }
+            else {
+                return answers;
+            }
+        })
 }
-
-initAnswers();
