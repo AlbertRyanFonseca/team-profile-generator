@@ -3,9 +3,8 @@ const fs = require('fs');
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const Manager = require("./lib/Manager");
+const employeeArray = [];
 const generateTemplate = require('./src/template');
-
-const employeeArr = [];
 
 function empInfo() {
     return inquirer.prompt([
@@ -19,8 +18,8 @@ function empInfo() {
             type: 'input',
             name: 'name',
             message: 'What is your name?',
-            validate: emplName => {
-                if (emplName) {
+            validate: input => {
+                if (input) {
                     return true;
                 }
                 else {
@@ -33,8 +32,8 @@ function empInfo() {
             type: 'input',
             name: 'id',
             message: 'What is your id number?',
-            validate: emplId => {
-                if (emplId) {
+            validate: input => {
+                if (input) {
                     return true;
                 }
                 else {
@@ -47,8 +46,8 @@ function empInfo() {
             type: 'input',
             name: 'email',
             message: 'what is your email?',
-            validate: emplEmail => {
-                if (emplEmail) {
+            validate: input => {
+                if (input) {
                     return true;
                 }
                 else {
@@ -77,8 +76,8 @@ function empInfo() {
             name: 'github',
             message: 'enter your github username?',
             when: answers => answers.chooseRole === 'Engineer',
-            validate: engGitHub => {
-                if (engGitHub) {
+            validate: input => {
+                if (input) {
                     return true;
                 } else {
                     console.log('Please enter your GitHub username!');
@@ -91,8 +90,8 @@ function empInfo() {
             name: 'phone',
             message: 'what is your office number?',
             when: answers => answers.chooseRole === 'Manager',
-            validate: manPhone => {
-                if (manPhone) {
+            validate: (input) => {
+                if (input) {
                     return true;
                 } else {
                     console.log('Please enter an office number!');
@@ -110,13 +109,13 @@ function empInfo() {
         .then(answers => {
             if (answers.chooseRole === 'Intern') {
                 const intern = new Intern(answers.name, answers.id, answers.email, answers.school);
-                employeeArr.push(intern);
+                employeeArray.push(intern);
             } else if (answers.chooseRole === 'Engineer') {
                 const engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
-                employeeArr.push(engineer);
+                employeeArray.push(engineer);
             } else if (answers.chooseRole === 'Manager') {
                 const manager = new Manager(answers.name, answers.id, answers.email, answers.phone);
-                employeeArr.push(manager);
+                employeeArray.push(manager);
             }
 
             if (answers.confirmation) {
@@ -138,7 +137,7 @@ function writeFile(template) {
 function initFile() {
     empInfo()
         .then(() => {
-            return generateTemplate(employeeArr)
+            return generateTemplate(employeeArray)
         })
         .then((generateTemplate) => {
             return writeFile(generateTemplate);

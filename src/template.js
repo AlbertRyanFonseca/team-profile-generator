@@ -2,7 +2,7 @@ const fs = require('fs');
 
 function generateTemplate() {
 
-    const internArr = employeeArr.filter(intern => intern.getRole() === 'Intern');
+    const internArr = employeeArray.filter(intern => intern.getRole() === 'Intern');
     const internCard = internArr.map(intern => {
         return ` 
     <div class= "col-3 mx-auto">
@@ -26,7 +26,7 @@ function generateTemplate() {
     })
     const internInfo = internCard.join(' ');
 
-    const managerArr = employeeArr.filter(manager => manager.getRole() === 'Manager');
+    const managerArr = employeeArray.filter(manager => manager.getRole() === 'Manager');
     const managerCard = managerArr.map(manager => {
         return `
     <div class= "col-3 mx-auto">
@@ -50,7 +50,7 @@ function generateTemplate() {
     });
     const managerInfo = managerCard.join(' ');
 
-    const engineerArr = employeeArr.filter(engineer => engineer.getRole() === 'Engineer');
+    const engineerArr = employeeArray.filter(engineer => engineer.getRole() === 'Engineer');
     const engineerCard = engineerArr.map(engineer => {
         return `
     <div class= "col-3 mx-auto">
@@ -101,7 +101,7 @@ function generateTemplate() {
                     ${internInfo}
                     ${managerInfo}
                     ${engineerInfo}
-                    
+
                 </div>
             </div>
     </html>
