@@ -127,3 +127,22 @@ function empInfo() {
             }
         })
 }
+
+function writeFile(template) {
+    fs.writeFile('./dist/index.html', template, (err) => {
+        if (err) throw err;
+        console.log('File Created');
+    })
+}
+
+function initFile() {
+    empInfo()
+        .then(() => {
+            return generateTemplate(employeeArr)
+        })
+        .then((generateTemplate) => {
+            return writeFile(generateTemplate);
+        })
+}
+
+initFile();
